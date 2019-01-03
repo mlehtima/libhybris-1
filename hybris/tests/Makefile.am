@@ -3,6 +3,7 @@ bin_PROGRAMS = \
 	test_egl \
 	test_egl_configs \
 	test_glesv2 \
+	test_glesv3 \
 	test_sf \
 	test_sensors \
 	test_input \
@@ -86,6 +87,36 @@ test_glesv2_CXXFLAGS += \
 	-DHAS_HWCOMPOSER2_HEADERS=0
 endif
 test_glesv2_LDADD = \
+	-lm \
+	$(top_builddir)/common/libhybris-common.la \
+	$(top_builddir)/egl/platforms/hwcomposer/libhybris-hwcomposerwindow.la \
+	$(top_builddir)/egl/platforms/common/libhybris-eglplatformcommon.la \
+	$(top_builddir)/egl/libEGL.la \
+	$(top_builddir)/glesv2/libGLESv2.la \
+	$(top_builddir)/libsync/libsync.la \
+	$(top_builddir)/hwc2/libhwc2.la
+
+test_glesv3_SOURCES = test_glesv3.cpp test_common.cpp
+test_glesv3_CXXFLAGS = \
+	-I$(top_srcdir)/include \
+	$(ANDROID_HEADERS_CFLAGS) \
+	-I$(top_srcdir)/common \
+	-I$(top_srcdir)/egl/platforms/common \
+	-I$(top_srcdir)/egl/platforms/hwcomposer \
+	-I$(top_srcdir)/libsync \
+	-std=gnu++11 \
+	-DUSE_HWCOMPOSER=1
+if WANT_MESA
+test_glesv3_CXXFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
+endif
+if HAS_HWCOMPOSER2_HEADERS
+test_glesv3_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=1
+else
+test_glesv3_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=0
+endif
+test_glesv3_LDADD = \
 	-lm \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/egl/platforms/hwcomposer/libhybris-hwcomposerwindow.la \
