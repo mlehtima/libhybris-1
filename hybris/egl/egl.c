@@ -461,4 +461,15 @@ EGLBoolean eglDestroyImageKHR(EGLDisplay dpy, EGLImageKHR image)
 	return ret;
 }
 
+HYBRIS_IMPLEMENT_FUNCTION3(egl, EGLSync, eglCreateSync, EGLDisplay, EGLenum, const EGLAttrib *);
+HYBRIS_IMPLEMENT_FUNCTION2(egl, EGLBoolean, eglDestroySync, EGLDisplay, EGLSync);
+HYBRIS_IMPLEMENT_FUNCTION4(egl, EGLint, eglClientWaitSync, EGLDisplay, EGLSync, EGLint, EGLTime);
+HYBRIS_IMPLEMENT_FUNCTION4(egl, EGLBoolean, eglGetSyncAttrib, EGLDisplay, EGLSync, EGLint, EGLAttrib *);
+HYBRIS_IMPLEMENT_FUNCTION5(egl, EGLImage, eglCreateImage, EGLDisplay, EGLContext, EGLenum, EGLClientBuffer, const EGLAttrib *);
+HYBRIS_IMPLEMENT_FUNCTION2(egl, EGLBoolean, eglDestroyImage, EGLDisplay, EGLImage);
+HYBRIS_IMPLEMENT_FUNCTION3(egl, EGLDisplay, eglGetPlatformDisplay, EGLenum, void *, const EGLAttrib *);
+HYBRIS_IMPLEMENT_FUNCTION4(egl, EGLSurface, eglCreatePlatformWindowSurface, EGLDisplay, EGLConfig, void *, const EGLAttrib *);
+HYBRIS_IMPLEMENT_FUNCTION4(egl, EGLSurface, eglCreatePlatformPixmapSurface, EGLDisplay, EGLConfig, void *, const EGLAttrib *);
+HYBRIS_IMPLEMENT_FUNCTION3(egl, EGLBoolean, eglWaitSync, EGLDisplay, EGLSync, EGLint);
+
 // vim:ts=4:sw=4:noexpandtab
