@@ -26,11 +26,29 @@ test_audio_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/hardware/libhardware.la
 
-test_egl_SOURCES = test_egl.c
+test_egl_SOURCES = test_egl.cpp
 test_egl_CFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS) \
 	-I$(top_srcdir)/egl/platforms/common
+test_egl_CXXFLAGS = \
+	-I$(top_srcdir)/include \
+	$(ANDROID_HEADERS_CFLAGS) \
+	-I$(top_srcdir)/common \
+	-I$(top_srcdir)/egl/platforms/common \
+	-I$(top_srcdir)/egl/platforms/hwcomposer \
+	-I$(top_srcdir)/libsync \
+	-std=gnu++11
+if WANT_MESA
+test_egl_CXXFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
+endif
+if HAS_HWCOMPOSER2_HEADERS
+test_egl_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=1
+else
+test_egl_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=0
+endif
 
 if WANT_MESA
 test_egl_CFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
@@ -47,27 +65,45 @@ test_egl_configs_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/egl/libEGL.la
 
-test_glesv2_SOURCES = test_glesv2.c
-test_glesv2_CFLAGS = \
+test_glesv2_SOURCES = test_glesv2.cpp test_common.cpp
+test_glesv2_CXXFLAGS = \
 	-I$(top_srcdir)/include \
-	$(ANDROID_HEADERS_CFLAGS)
+	$(ANDROID_HEADERS_CFLAGS) \
+	-I$(top_srcdir)/common \
+	-I$(top_srcdir)/egl/platforms/common \
+	-I$(top_srcdir)/egl/platforms/hwcomposer \
+	-I$(top_srcdir)/libsync \
+	-std=gnu++11 \
+	-DUSE_HWCOMPOSER=1
 if WANT_MESA
-test_glesv2_CFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
+test_glesv2_CXXFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
+endif
+if HAS_HWCOMPOSER2_HEADERS
+test_glesv2_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=1
+else
+test_glesv2_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=0
 endif
 test_glesv2_LDADD = \
 	-lm \
 	$(top_builddir)/common/libhybris-common.la \
+	$(top_builddir)/egl/platforms/hwcomposer/libhybris-hwcomposerwindow.la \
+	$(top_builddir)/egl/platforms/common/libhybris-eglplatformcommon.la \
 	$(top_builddir)/egl/libEGL.la \
-	$(top_builddir)/glesv2/libGLESv2.la
+	$(top_builddir)/glesv2/libGLESv2.la \
+	$(top_builddir)/libsync/libsync.la \
+	$(top_builddir)/hwc2/libhwc2.la
 
-test_hwcomposer_SOURCES = test_hwcomposer.cpp
+test_hwcomposer_SOURCES = test_hwcomposer.cpp test_common.cpp
 test_hwcomposer_CXXFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS) \
 	-I$(top_srcdir)/common \
 	-I$(top_srcdir)/egl/platforms/common \
 	-I$(top_srcdir)/egl/platforms/hwcomposer \
-	-I$(top_srcdir)/libsync
+	-I$(top_srcdir)/libsync \
+	-DUSE_HWCOMPOSER=1
 
 if WANT_MESA
 test_hwcomposer_CXXFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
@@ -118,8 +154,8 @@ test_ui_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/ui/libui.la
 
-test_sf_SOURCES = test_sf.c
-test_sf_CFLAGS = \
+test_sf_SOURCES = test_sf.cpp test_common.cpp
+test_sf_CXXFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS)
 test_sf_LDADD = \
@@ -136,10 +172,22 @@ test_input_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/input/libis.la
 
-test_camera_SOURCES = test_camera.c
-test_camera_CFLAGS = \
+test_camera_SOURCES = test_camera.cpp test_common.cpp
+test_camera_CXXFLAGS = \
 	-I$(top_srcdir)/include \
-	$(ANDROID_HEADERS_CFLAGS)
+	$(ANDROID_HEADERS_CFLAGS) \
+	-I$(top_srcdir)/common \
+	-I$(top_srcdir)/egl/platforms/common \
+	-I$(top_srcdir)/egl/platforms/hwcomposer \
+	-I$(top_srcdir)/libsync \
+	-std=gnu++11
+if HAS_HWCOMPOSER2_HEADERS
+test_camera_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=1
+else
+test_camera_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=0
+endif
 test_camera_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/egl/libEGL.la \
@@ -149,9 +197,18 @@ test_camera_LDADD = \
 	$(top_builddir)/egl/platforms/common/libwayland-egl.la \
 	$(WAYLAND_CLIENT_LIBS)
 
-test_media_SOURCES = test_media.c
+test_media_SOURCES = test_media.cpp test_common.cpp
 test_media_CFLAGS = \
 	-I$(top_srcdir)/include
+test_media_CXXFLAGS = \
+	$(test_media_CFLAGS)
+if HAS_HWCOMPOSER2_HEADERS
+test_media_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=1
+else
+test_media_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=0
+endif
 test_media_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/egl/libEGL.la \
@@ -159,9 +216,18 @@ test_media_LDADD = \
 	$(top_builddir)/media/libmedia.la \
 	$(top_builddir)/sf/libsf.la
 
-test_recorder_SOURCES = test_recorder.c
+test_recorder_SOURCES = test_recorder.cpp test_common.cpp
 test_recorder_CFLAGS = \
 	-I$(top_srcdir)/include
+test_recorder_CXXFLAGS = \
+	$(test_recorder_CFLAGS)
+if HAS_HWCOMPOSER2_HEADERS
+test_recorder_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=1
+else
+test_recorder_CXXFLAGS += \
+	-DHAS_HWCOMPOSER2_HEADERS=0
+endif
 test_recorder_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/egl/libEGL.la \
@@ -238,7 +304,7 @@ test_opencl_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/opencl/libOpenCL.la
 
-test_hwc2_SOURCES = test_hwc2.cpp
+test_hwc2_SOURCES = test_hwc2.cpp test_common.cpp
 test_hwc2_CXXFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS) \
@@ -246,7 +312,8 @@ test_hwc2_CXXFLAGS = \
 	-I$(top_srcdir)/egl/platforms/common \
 	-I$(top_srcdir)/egl/platforms/hwcomposer \
 	-I$(top_srcdir)/libsync \
-	-std=gnu++11
+	-std=gnu++11\
+	-DUSE_HWCOMPOSER=1
 
 if HAS_HWCOMPOSER2_HEADERS
 test_hwc2_CXXFLAGS += \
@@ -266,5 +333,13 @@ test_hwc2_LDADD = \
 	$(top_builddir)/glesv2/libGLESv2.la \
 	$(top_builddir)/libsync/libsync.la \
 	$(top_builddir)/hwc2/libhwc2.la
+else
+test_hwc2_LDADD = \
+        -lm \
+        $(top_builddir)/common/libhybris-common.la \
+	$(top_builddir)/egl/platforms/hwcomposer/libhybris-hwcomposerwindow.la \
+	$(top_builddir)/egl/platforms/common/libhybris-eglplatformcommon.la \
+	$(top_builddir)/egl/libEGL.la \
+	$(top_builddir)/glesv2/libGLESv2.la \
+	$(top_builddir)/libsync/libsync.la
 endif
-
