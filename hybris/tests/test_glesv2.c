@@ -23,6 +23,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 
+#include "test_common.h"
+
 const char vertex_src [] =
 "                                        \
    attribute vec4        position;       \
@@ -49,16 +51,6 @@ const char fragment_src [] =
              + atan(pos.y,pos.x) - phase );            \
    }                                                   \
 ";
-
-GLuint load_shader(const char *shader_source, GLenum type)
-{
-	GLuint  shader = glCreateShader(type);
-
-	glShaderSource(shader, 1, &shader_source, NULL);
-	glCompileShader(shader);
-
-	return shader;
-}
 
 
 GLfloat norm_x    =  0.0;
@@ -127,15 +119,7 @@ int main(int argc, char **argv)
 	assert(version);
 	printf("%s\n",version);
 
-
-	GLuint vertexShader   = load_shader ( vertex_src , GL_VERTEX_SHADER  );     // load vertex shader
-	GLuint fragmentShader = load_shader ( fragment_src , GL_FRAGMENT_SHADER );  // load fragment shader
-
-	GLuint shaderProgram  = glCreateProgram ();                 // create program object
-	glAttachShader ( shaderProgram, vertexShader );             // and attach both...
-	glAttachShader ( shaderProgram, fragmentShader );           // ... shaders to it
-
-	glLinkProgram ( shaderProgram );    // link the program
+	GLuint shaderProgram = create_program(vertex_src, fragment_src);
 	glUseProgram  ( shaderProgram );    // and select it for usage
 
 	//// now get the locations (kind of handle) of the shaders variables

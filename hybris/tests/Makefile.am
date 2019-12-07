@@ -47,7 +47,7 @@ test_egl_configs_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/egl/libEGL.la
 
-test_glesv2_SOURCES = test_glesv2.c
+test_glesv2_SOURCES = test_glesv2.c test_common.c
 test_glesv2_CFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS)
@@ -60,7 +60,7 @@ test_glesv2_LDADD = \
 	$(top_builddir)/egl/libEGL.la \
 	$(top_builddir)/glesv2/libGLESv2.la
 
-test_hwcomposer_SOURCES = test_hwcomposer.cpp
+test_hwcomposer_SOURCES = test_hwcomposer.cpp test_common.c
 test_hwcomposer_CXXFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS) \
@@ -118,7 +118,7 @@ test_ui_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/ui/libui.la
 
-test_sf_SOURCES = test_sf.c
+test_sf_SOURCES = test_sf.c test_common.c
 test_sf_CFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS)
@@ -136,7 +136,7 @@ test_input_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/input/libis.la
 
-test_camera_SOURCES = test_camera.c
+test_camera_SOURCES = test_camera.c test_common.c
 test_camera_CFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS)
@@ -149,7 +149,7 @@ test_camera_LDADD = \
 	$(top_builddir)/egl/platforms/common/libwayland-egl.la \
 	$(WAYLAND_CLIENT_LIBS)
 
-test_media_SOURCES = test_media.c
+test_media_SOURCES = test_media.c test_common.c
 test_media_CFLAGS = \
 	-I$(top_srcdir)/include
 test_media_LDADD = \
@@ -159,7 +159,7 @@ test_media_LDADD = \
 	$(top_builddir)/media/libmedia.la \
 	$(top_builddir)/sf/libsf.la
 
-test_recorder_SOURCES = test_recorder.c
+test_recorder_SOURCES = test_recorder.c test_common.c
 test_recorder_CFLAGS = \
 	-I$(top_srcdir)/include
 test_recorder_LDADD = \
@@ -238,7 +238,7 @@ test_opencl_LDADD = \
 	$(top_builddir)/common/libhybris-common.la \
 	$(top_builddir)/opencl/libOpenCL.la
 
-test_hwc2_SOURCES = test_hwc2.cpp
+test_hwc2_SOURCES = test_hwc2.cpp test_common.c
 test_hwc2_CXXFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS) \
