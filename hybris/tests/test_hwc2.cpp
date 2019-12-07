@@ -32,6 +32,7 @@
 
 #include <hybris/hwc2/hwc2_compatibility_layer.h>
 #include "logging.h"
+#include "test_common.h"
 
 const char vertex_src [] =
 "                                        \
@@ -59,17 +60,6 @@ const char fragment_src [] =
              + atan(pos.y,pos.x) - phase );            \
    }                                                   \
 ";
-
-GLuint load_shader(const char *shader_source, GLenum type)
-{
-    GLuint  shader = glCreateShader(type);
-
-    glShaderSource(shader, 1, &shader_source, NULL);
-    glCompileShader(shader);
-
-    return shader;
-}
-
 
 GLfloat norm_x    =  0.0;
 GLfloat norm_y    =  0.0;
@@ -305,14 +295,7 @@ int main()
     assert(version);
     printf("%s\n",version);
 
-    GLuint vertexShader = load_shader (vertex_src, GL_VERTEX_SHADER);
-    GLuint fragmentShader = load_shader(fragment_src, GL_FRAGMENT_SHADER);
-
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-
-    glLinkProgram(shaderProgram);
+    GLuint shaderProgram = create_program(vertex_src, fragment_src);
     glUseProgram(shaderProgram);
 
     position_loc = glGetAttribLocation(shaderProgram, "position");
