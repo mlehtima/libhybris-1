@@ -62,6 +62,14 @@ test_glesv2_LDADD = \
 	$(top_builddir)/glesv2/libGLESv2.la
 
 test_glesv3_SOURCES = test_glesv3.cpp test_common.c
+test_glesv3_CFLAGS = \
+	-I$(top_srcdir)/include \
+	$(ANDROID_HEADERS_CFLAGS) \
+	-I$(top_srcdir)/common \
+	-I$(top_srcdir)/egl/platforms/common \
+	-I$(top_srcdir)/egl/platforms/hwcomposer \
+	-I$(top_srcdir)/libsync \
+	-std=gnu++11
 test_glesv3_CXXFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS) \
@@ -84,6 +92,13 @@ test_glesv3_LDADD = \
 	$(top_builddir)/hwc2/libhwc2.la
 
 test_hwcomposer_SOURCES = test_hwcomposer.cpp test_common.c
+test_hwcomposer_CFLAGS = \
+	-I$(top_srcdir)/include \
+	$(ANDROID_HEADERS_CFLAGS) \
+	-I$(top_srcdir)/common \
+	-I$(top_srcdir)/egl/platforms/common \
+	-I$(top_srcdir)/egl/platforms/hwcomposer \
+	-I$(top_srcdir)/libsync
 test_hwcomposer_CXXFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS) \
@@ -262,6 +277,14 @@ test_opencl_LDADD = \
 	$(top_builddir)/opencl/libOpenCL.la
 
 test_hwc2_SOURCES = test_hwc2.cpp test_common.c
+test_hwc2_CFLAGS = \
+	-I$(top_srcdir)/include \
+	$(ANDROID_HEADERS_CFLAGS) \
+	-I$(top_srcdir)/common \
+	-I$(top_srcdir)/egl/platforms/common \
+	-I$(top_srcdir)/egl/platforms/hwcomposer \
+	-I$(top_srcdir)/libsync \
+	-std=gnu++11
 test_hwc2_CXXFLAGS = \
 	-I$(top_srcdir)/include \
 	$(ANDROID_HEADERS_CFLAGS) \
