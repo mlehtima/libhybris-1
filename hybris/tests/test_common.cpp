@@ -263,7 +263,8 @@ HWComposer *create_hwcomposer_window()
 	size_t numConfigs = 5;
 
 	err = hwcDevicePtr->getDisplayConfigs(hwcDevicePtr, 0, configs, &numConfigs);
-	assert (err == 0);
+	printf("err: %i numConfigs: %i\n", err, numConfigs);
+//	assert (err == 0);
 
 	int32_t attr_values[2];
 	uint32_t attributes[] = { HWC_DISPLAY_WIDTH, HWC_DISPLAY_HEIGHT, HWC_DISPLAY_NO_ATTRIBUTE };
