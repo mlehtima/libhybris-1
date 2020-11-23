@@ -27,6 +27,10 @@
 #include "ws.h"
 #include "egldispatchstubs.h"
 
+// Implemented in egl.c
+extern "C" EGLDisplay __eglHybrisGetPlatformDisplayCommon(EGLenum platform,
+                            void *display_id, const EGLAttrib *attrib_list);
+
 static const __EGLapiExports *__eglGLVNDApiExports = NULL;
 
 /* Libhybris doesn't support EGL 1.5 and eglGetPlatformDisplay() variant.
