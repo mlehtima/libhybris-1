@@ -106,24 +106,34 @@ struct ws_egl_interface hybris_egl_interface = {
 	egl_helper_get_mapping,
 };
 
-static __thread EGLint __eglError = EGL_SUCCESS;
+static __thread EGLint __eglHybrisError = EGL_SUCCESS;
 
 void __eglHybrisSetError(EGLint error)
 {
-	__eglError = error;
+	__eglHybrisError = error;
 }
 
 EGLint eglGetError(void)
 {
+	/*
+	 * EGL requires that eglGetError() reports only the "most recent" error
+	 * and clear the error afterward. Because we don't hook every function,
+	 * both us and Android can have a separated error and we won't know what
+	 * is the most recent. But whatever error we report, we have to clear both
+	 * error. So we report our error over Android's because it's easier this
+	 * way.
+	 */
 	HYBRIS_DLSYSM(egl, &_eglGetError, "eglGetError");
 
-	if (__eglError != EGL_SUCCESS) {
-		EGLint error = __eglError;
-		__eglError = EGL_SUCCESS;
-		return error;
+	EGLint androidError = _eglGetError();
+
+	if (__eglHybrisError != EGL_SUCCESS) {
+		EGLint ourError = __eglHybrisError;
+		__eglHybrisError = EGL_SUCCESS;
+		return ourError;
 	}
 
-	return _eglGetError();
+	return androidError;
 }
 
 #define _EGL_MAX_DISPLAYS 100
