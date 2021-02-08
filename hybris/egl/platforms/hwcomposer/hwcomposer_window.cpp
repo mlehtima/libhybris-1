@@ -105,6 +105,7 @@ HWComposerNativeWindowBuffer::HWComposerNativeWindowBuffer(unsigned int width,
     busy = 0;
     status = 0;
 
+    hybris_gralloc_initialize(0);
     hybris_gralloc_allocate(width, height, format, usage, &handle, (uint32_t*)&stride);
 
     TRACE("width=%d height=%d stride=%d format=x%x usage=x%x status=%s this=%p",

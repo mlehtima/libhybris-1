@@ -129,8 +129,6 @@ void hybris_gralloc_initialize(int framebuffer)
             assert(NULL);
         }
     } else {
-        // shouldn't reach here.
-        assert(NULL);
     }
 }
 
