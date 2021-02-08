@@ -29,8 +29,8 @@ static int version = -1;
 static hw_module_t *gralloc_hardware_module = NULL;
 
 static framebuffer_device_t *framebuffer_device = NULL;
-static gralloc_module_t *gralloc0_module;
-static alloc_device_t *gralloc0_alloc;
+static gralloc_module_t *gralloc0_module = NULL;
+static alloc_device_t *gralloc0_alloc = NULL;
 
 #if HAS_GRALLOC1_HEADER
 static gralloc1_device_t *gralloc1_device = NULL;
