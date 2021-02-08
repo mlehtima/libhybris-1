@@ -270,6 +270,7 @@ int hybris_gralloc_allocate(int width, int height, int format, int usage, buffer
         ret |= gralloc1_get_stride(gralloc1_device, *handle_ptr, stride_ptr);
         ret |= gralloc1_destroy_descriptor(gralloc1_device, desc);
     ) else if GRALLOC0(
+        fprintf(stderr, "GRALLOC TEST: %p %p\n", gralloc0_alloc, gralloc0_alloc ? gralloc0_alloc->alloc : NULL);
         ret = gralloc0_alloc->alloc(gralloc0_alloc,
                                     width, height, format, usage,
                                     handle_ptr, (int*)stride_ptr);
