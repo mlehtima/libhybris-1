@@ -9,7 +9,7 @@ SUBDIRS += jb
 endif
 endif
 
-if HAS_ANDROID_6_0_0
+if HAS_ANDROID_5_0_0
 SUBDIRS += mm
 endif
 
