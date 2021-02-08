@@ -30,14 +30,10 @@ static struct ws_module *ws = NULL;
 
 static void _init_ws()
 {
+	pthread_mutex_lock(&mutex);
+
 	if (ws == NULL)
 	{
-		pthread_mutex_lock(&mutex);
-		if (ws != NULL) {
-			pthread_mutex_unlock(&mutex);
-			return;
-		}
-
 		char ws_name[2048];
 		char *egl_platform;
 
@@ -73,9 +69,9 @@ static void _init_ws()
 		ws = dlsym(wsmod, "ws_module_info");
 		assert(ws != NULL);
 		ws->init_module(&hybris_egl_interface);
-
-		pthread_mutex_unlock(&mutex);
 	}
+
+	pthread_mutex_unlock(&mutex);
 }
 
 
