@@ -25,9 +25,9 @@
 
 #ifdef WANT_ARM_TRACING
 #include "../wrappers.h"
-#endif
 
 extern void *(*_create_wrapper)(const char *symbol, void *function, int wrapper_type);
+#endif
 
 /* This file hijacks the symbols stubbed out in libdl.so. */
 
