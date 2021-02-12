@@ -146,7 +146,7 @@ void *create_wrapper(const char *symbol, void *function, int wrapper_type)
     wrapper_addr = mmap(NULL, wrapper_size,
         PROT_READ | PROT_WRITE | PROT_EXEC,
         MAP_ANONYMOUS | MAP_PRIVATE,
-        0, 0);
+        -1, 0);
 
     if(MAP_FAILED == wrapper_addr)
     {
