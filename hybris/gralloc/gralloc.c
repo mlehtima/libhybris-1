@@ -97,6 +97,7 @@ void hybris_gralloc_initialize(int framebuffer)
                     if ((gralloc_open(gralloc_hardware_module, &gralloc0_alloc) == 0) && gralloc0_alloc != NULL) {
                         // success
                         gralloc0_module = (struct gralloc_module_t*)gralloc_hardware_module;
+fprintf(stderr, "GRALLOC ALLOC->ALLOC %p\n", gralloc0_alloc->alloc);
                         version = 0;
                         atexit(hybris_gralloc_deinitialize);
                     } else {
@@ -112,6 +113,7 @@ void hybris_gralloc_initialize(int framebuffer)
                 // success
                 gralloc0_module = (struct gralloc_module_t*)gralloc_hardware_module;
                 version = 0;
+fprintf(stderr, "GRALLOC ALLOC->ALLOC %p\n", gralloc0_alloc->alloc);
                 atexit(hybris_gralloc_deinitialize);
             } else {
                 // fail
