@@ -1386,18 +1386,20 @@ static int reloc_library(soinfo *si, Elf_Rel *rel, unsigned count)
                 INFO("HYBRIS: '%s' hooked symbol %s to %x\n", si->name,
                                                   sym_name, sym_addr);
 #ifdef WANT_ARM_TRACING
-               s = _do_lookup(si, sym_name, &base);
-               switch(ELF32_ST_TYPE(s->st_info))
-               {
-                  case STT_FUNC:
-                  case STT_GNU_IFUNC:
-                  case STT_ARM_TFUNC:
-                    sym_addr = (unsigned)_create_wrapper(sym_name, (void*)sym_addr, WRAPPER_HOOKED);
-                    break;
+                s = _do_lookup(si, sym_name, &base);
+                if(s != NULL) {
+                    switch(ELF32_ST_TYPE(s->st_info))
+                    {
+                       case STT_FUNC:
+                       case STT_GNU_IFUNC:
+                       case STT_ARM_TFUNC:
+                         sym_addr = (unsigned)_create_wrapper(sym_name, (void*)sym_addr, WRAPPER_HOOKED);
+                         break;
+                    }
                 }
 #endif
             } else {
-               s = _do_lookup(si, sym_name, &base);
+                s = _do_lookup(si, sym_name, &base);
             }
             if(sym_addr == 0) {
             if(s == NULL) {
