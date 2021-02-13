@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#include <android-config.h>
+
 // for usage definitions and so on
 #if HAS_GRALLOC1_HEADER
 #include <hardware/gralloc1.h>

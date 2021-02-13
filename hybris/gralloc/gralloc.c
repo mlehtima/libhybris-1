@@ -1,3 +1,5 @@
+#include <android-config.h>
+
 #include <stdlib.h>
 
 #include <hardware/hardware.h>
@@ -12,7 +14,6 @@
 #ifdef ANDROID_BUILD
 #include "hybris-gralloc.h"
 #else
-#include <android-config.h>
 #include <hybris/gralloc/gralloc.h>
 #include <hybris/common/binding.h>
 #endif
