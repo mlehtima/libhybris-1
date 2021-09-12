@@ -350,7 +350,11 @@ AS_IF([test $android_headers_major -ge 7 -a $android_headers_minor -ge 0 ], [
 
 	AM_COND_IF([HAS_VULKAN_HEADERS], [AC_CONFIG_FILES([
 		vulkan/Makefile
-		vulkan/vulkan.pc])])
+		vulkan/vulkan.pc
+		vulkan/platforms/Makefile
+		vulkan/platforms/common/Makefile
+		vulkan/platforms/common/hybris-vulkan-platform.pc
+		vulkan/platforms/null/Makefile])])
 ])
 
 AM_COND_IF([WANT_WAYLAND_EGL], [AC_CONFIG_FILES([platforms/common/wayland-egl.pc])])
