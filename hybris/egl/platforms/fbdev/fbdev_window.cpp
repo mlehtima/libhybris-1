@@ -20,6 +20,7 @@
 
 #include <errno.h>
 #include <assert.h>
+#include <inttypes.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <string.h>
@@ -468,10 +469,10 @@ unsigned int FbDevNativeWindow::getUsage() const
  *  Calling this function will usually cause following buffers to be
  *  reallocated.
  */
-int FbDevNativeWindow::setUsage(int usage)
+int FbDevNativeWindow::setUsage(uint64_t usage)
 {
     m_allocateBuffers = (m_usage != usage);
-    TRACE("usage=x%x m_allocateBuffers=%d", usage, m_allocateBuffers);
+    TRACE("usage=x%" PRIx64 " m_allocateBuffers=%d", usage, m_allocateBuffers);
     m_usage = usage;
     return NO_ERROR;
 }

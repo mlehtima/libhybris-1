@@ -24,6 +24,7 @@
 
 #include <errno.h>
 #include <assert.h>
+#include <inttypes.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -431,11 +432,11 @@ unsigned int HWComposerNativeWindow::getUsage() const
  *  Calling this function will usually cause following buffers to be
  *  reallocated.
  */
-int HWComposerNativeWindow::setUsage(int usage)
+int HWComposerNativeWindow::setUsage(uint64_t usage)
 {
     usage |= GRALLOC_USAGE_HW_COMPOSER|GRALLOC_USAGE_HW_FB;
     int need_realloc = (m_usage != (unsigned int) usage);
-    TRACE("usage=x%x realloc=%d", usage, need_realloc);
+    TRACE("usage=x%" PRIx64 " realloc=%d", usage, need_realloc);
     m_usage = usage;
     if (need_realloc)
         destroyBuffers();
