@@ -35,6 +35,11 @@ struct ws_module {
 
     VkResult (*vkEnumerateInstanceExtensionProperties)(const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties);
     VkResult (*vkCreateInstance)(const VkInstanceCreateInfo *pCreateInfo, const VkAllocationCallbacks *pAllocator, VkInstance *pInstance);
+#ifdef WANT_WAYLAND
+    VkResult (*vkCreateWaylandSurfaceKHR)(VkInstance instance, const VkWaylandSurfaceCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
+    VkBool32 (*vkGetPhysicalDeviceWaylandPresentationSupportKHR)(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, struct wl_display* display);
+    void (*vkDestroySurfaceKHR)(VkInstance instance, VkSurfaceKHR surface, const VkAllocationCallbacks* pAllocator);
+#endif
     PFN_vkVoidFunction (*vkGetDeviceProcAddr)(VkDevice device, const char *procname);
     PFN_vkVoidFunction (*vkGetInstanceProcAddr)(VkInstance instance, const char *procname);
     void (*vkSetInstanceProcAddrFunc)(PFN_vkVoidFunction addr);
@@ -42,6 +47,11 @@ struct ws_module {
 
 VkResult ws_vkEnumerateInstanceExtensionProperties(const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties);
 VkResult ws_vkCreateInstance(const VkInstanceCreateInfo *pCreateInfo, const VkAllocationCallbacks *pAllocator, VkInstance *pInstance);
+#ifdef WANT_WAYLAND
+VkResult ws_vkCreateWaylandSurfaceKHR(VkInstance instance, const VkWaylandSurfaceCreateInfoKHR* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkSurfaceKHR* pSurface);
+VkBool32 ws_vkGetPhysicalDeviceWaylandPresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, struct wl_display* display);
+void ws_vkDestroySurfaceKHR(VkInstance instance, VkSurfaceKHR surface, const VkAllocationCallbacks* pAllocator);
+#endif
 PFN_vkVoidFunction ws_vkGetDeviceProcAddr(VkDevice device, const char *procname);
 PFN_vkVoidFunction ws_vkGetInstanceProcAddr(VkInstance instance, const char *procname);
 void ws_vkSetInstanceProcAddrFunc(PFN_vkVoidFunction addr);
