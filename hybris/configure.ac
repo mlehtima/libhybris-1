@@ -349,7 +349,10 @@ AC_CHECK_HEADERS(vulkan/vulkan.h, HAS_VULKAN_HEADERS=yes)
 AM_CONDITIONAL([HAS_VULKAN_HEADERS], [test x"$HAS_VULKAN_HEADERS" = x"yes"])
 
 AM_COND_IF([HAS_VULKAN_HEADERS], [AC_CONFIG_FILES([
-	vulkan/Makefile])])
+	vulkan/Makefile
+	vulkan/platforms/Makefile
+	vulkan/platforms/common/Makefile
+	vulkan/platforms/null/Makefile])])
 
 AM_COND_IF([WANT_WAYLAND_EGL], [AC_CONFIG_FILES([platforms/common/wayland-egl.pc])])
 AC_OUTPUT
