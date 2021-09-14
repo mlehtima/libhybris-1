@@ -17,7 +17,6 @@
 
 #ifndef __VULKANPLATFORMCOMMON_H
 #define __VULKANPLATFORMCOMMON_H
-#include <string.h>
 
 void vulkanplatformcommon_init(struct ws_vulkan_interface *vulkan_iface);
 #endif

@@ -23,10 +23,9 @@
  **
  ****************************************************************************************/
 
-#ifndef Wayland_WINDOW_H
-#define Wayland_WINDOW_H
+#ifndef WAYLAND_WINDOW_H
+#define WAYLAND_WINDOW_H
 #include "nativewindowbase.h"
-#include <linux/fb.h>
 
 #include <hybris/gralloc/gralloc.h>
 

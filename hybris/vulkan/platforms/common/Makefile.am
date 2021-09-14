@@ -1,21 +1,17 @@
 lib_LTLIBRARIES = \
 	libhybris-vulkanplatformcommon.la
 
-libhybris_vulkanplatformcommon_la_SOURCES = \
-	vulkanplatformcommon.cpp
-
-
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = hybris-vulkan-platform.pc
+
+libhybris_vulkanplatformcommon_la_SOURCES = \
+	vulkanplatformcommon.cpp
 
 libhybris_vulkanplatformcommon_la_CFLAGS = -I$(top_srcdir)/include $(ANDROID_HEADERS_CFLAGS) -I$(top_srcdir)/vulkan -I$(top_srcdir)/common/ -I$(top_srcdir)/platforms/common/
 if WANT_WAYLAND
 libhybris_vulkanplatformcommon_la_CFLAGS += $(WAYLAND_CLIENT_CFLAGS) $(WAYLAND_SERVER_CFLAGS) $(ANDROID_HEADERS_CFLAGS)
 endif
 
-if WANT_MESA
-libhybris_vulkanplatformcommon_la_CFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
-endif
 if WANT_TRACE
 libhybris_vulkanplatformcommon_la_CFLAGS += -DDEBUG
 endif
@@ -25,10 +21,6 @@ endif
 
 
 libhybris_vulkanplatformcommon_la_CXXFLAGS = -I$(top_srcdir)/include -I$(top_srcdir)/vulkan $(ANDROID_HEADERS_CFLAGS) -I$(top_srcdir)/common/ -I$(top_srcdir)/platforms/common/
-if WANT_MESA
-libhybris_vulkanplatformcommon_la_CXXFLAGS += -DLIBHYBRIS_WANTS_MESA_X11_HEADERS
-endif
-
 if WANT_WAYLAND
 libhybris_vulkanplatformcommon_la_CXXFLAGS += $(WAYLAND_CLIENT_CFLAGS) $(WAYLAND_SERVER_CFLAGS) $(ANDROID_HEADERS_CFLAGS)
 endif

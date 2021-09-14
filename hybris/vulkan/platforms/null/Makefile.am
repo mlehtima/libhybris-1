@@ -1,9 +1,7 @@
 pkglib_LTLIBRARIES = vulkanplatform_null.la
 
-
 vulkanplatform_null_la_SOURCES = vulkanplatform_null.c
 vulkanplatform_null_la_CFLAGS = \
-	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/vulkan \

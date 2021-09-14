@@ -15,27 +15,7 @@
  *
  */
 
-#include <android-config.h>
 #include <ws.h>
-#include <stdlib.h>
-#include <dlfcn.h>
-#include <string.h>
-#include <stdio.h>
-#include <assert.h>
-#include "config.h"
-#include <time.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include "logging.h"
-
-#define VK_USE_PLATFORM_ANDROID_KHR 1
-#include <vulkan/vulkan.h>
-
-#include "windowbuffer.h"
-
-#include <hybris/gralloc/gralloc.h>
 
 static struct ws_vulkan_interface *my_vulkan_interface;
 

@@ -20,6 +20,7 @@
 
 #define VK_USE_PLATFORM_ANDROID_KHR 1
 #define VK_USE_PLATFORM_WAYLAND_KHR 1
+
 #include "config.h"
 #include <vulkan/vulkan.h>
 
@@ -40,8 +41,6 @@ struct ws_module {
     VkBool32 (*vkGetPhysicalDeviceWaylandPresentationSupportKHR)(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, struct wl_display* display);
     void (*vkDestroySurfaceKHR)(VkInstance instance, VkSurfaceKHR surface, const VkAllocationCallbacks* pAllocator);
 #endif
-    PFN_vkVoidFunction (*vkGetDeviceProcAddr)(VkDevice device, const char *procname);
-    PFN_vkVoidFunction (*vkGetInstanceProcAddr)(VkInstance instance, const char *procname);
     void (*vkSetInstanceProcAddrFunc)(PFN_vkVoidFunction addr);
 };
 
@@ -52,7 +51,5 @@ VkResult ws_vkCreateWaylandSurfaceKHR(VkInstance instance, const VkWaylandSurfac
 VkBool32 ws_vkGetPhysicalDeviceWaylandPresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, struct wl_display* display);
 void ws_vkDestroySurfaceKHR(VkInstance instance, VkSurfaceKHR surface, const VkAllocationCallbacks* pAllocator);
 #endif
-PFN_vkVoidFunction ws_vkGetDeviceProcAddr(VkDevice device, const char *procname);
-PFN_vkVoidFunction ws_vkGetInstanceProcAddr(VkInstance instance, const char *procname);
 void ws_vkSetInstanceProcAddrFunc(PFN_vkVoidFunction addr);
 #endif

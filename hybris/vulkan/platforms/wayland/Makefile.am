@@ -28,8 +28,6 @@ if !WANT_WL_SERVERSIDE_BUFFERS
 vulkanplatform_wayland_la_CXXFLAGS += -DHYBRIS_NO_SERVER_SIDE_BUFFERS
 endif
 
-
-
 vulkanplatform_wayland_la_LDFLAGS = \
 	-avoid-version -module -shared -export-dynamic \
 	$(top_builddir)/vulkan/platforms/common/libhybris-vulkanplatformcommon.la \
