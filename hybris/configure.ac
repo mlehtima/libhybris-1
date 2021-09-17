@@ -353,7 +353,6 @@ AS_IF([test $android_headers_major -ge 7 -a $android_headers_minor -ge 0 ], [
 		vulkan/vulkan.pc
 		vulkan/platforms/Makefile
 		vulkan/platforms/common/Makefile
-		vulkan/platforms/common/hybris-vulkan-platform.pc
 		vulkan/platforms/null/Makefile
 		vulkan/platforms/wayland/Makefile])])
 ])

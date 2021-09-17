@@ -1,9 +1,6 @@
 lib_LTLIBRARIES = \
 	libhybris-vulkanplatformcommon.la
 
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = hybris-vulkan-platform.pc
-
 libhybris_vulkanplatformcommon_la_SOURCES = \
 	vulkanplatformcommon.cpp
 
@@ -41,9 +38,9 @@ libhybris_vulkanplatformcommon_la_LDFLAGS += $(top_builddir)/libsync/libsync.la
 endif
 
 
-vulkanplatformcommondir = $(includedir)/hybris/vulkanplatformcommon
-vulkanplatformcommon_HEADERS = \
-	vulkanplatformcommon.h
+#vulkanplatformcommondir = $(includedir)/hybris/vulkanplatformcommon
+#vulkanplatformcommon_HEADERS = \
+#	vulkanplatformcommon.h
 
 if WANT_WAYLAND
 libhybris_vulkanplatformcommon_la_LDFLAGS += \
