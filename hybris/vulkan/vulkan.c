@@ -22,6 +22,7 @@
 #define VK_USE_PLATFORM_WAYLAND_KHR 1
 
 #include <vulkan/vulkan.h>
+#include <vulkan/vk_icd.h>
 #include <dlfcn.h>
 #include <stdlib.h>
 #include <string.h>
@@ -76,16 +77,19 @@ static VkResult (*_vkGetPhysicalDeviceSurfaceCapabilitiesKHR)(VkPhysicalDevice p
 
 /* Use IDLOAD approach also for float functions, since vulkan uses the aapcs-vfp calling convention even on android */
 
-VkResult vkCreateInstance(const VkInstanceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkInstance* pInstance)
+VkResult __vkCreateInstance(const VkInstanceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkInstance* pInstance)
 {
     if (_vkGetInstanceProcAddr == NULL) {
         HYBRIS_DLSYSM(vulkan, &_vkGetInstanceProcAddr, "vkGetInstanceProcAddr");
+HYBRIS_ERROR("_vkGetInstanceProcAddr == NULL set to %p", _vkGetInstanceProcAddr);
+        ws_vkSetInstanceProcAddrFunc((PFN_vkVoidFunction)_vkGetInstanceProcAddr);
     }
-    ws_vkSetInstanceProcAddrFunc((PFN_vkVoidFunction)_vkGetInstanceProcAddr);
+HYBRIS_ERROR("__vkCreateInstance");
+HYBRIS_ERROR("_vkGetInstanceProcAddr %p", _vkGetInstanceProcAddr);
 
     return ws_vkCreateInstance(pCreateInfo, pAllocator, pInstance);
 }
-
+/*
 VULKAN_IDLOAD(vkDestroyInstance);
 VULKAN_IDLOAD(vkEnumeratePhysicalDevices);
 VULKAN_IDLOAD(vkGetPhysicalDeviceFeatures);
@@ -94,9 +98,18 @@ VULKAN_IDLOAD(vkGetPhysicalDeviceImageFormatProperties);
 VULKAN_IDLOAD(vkGetPhysicalDeviceProperties);
 VULKAN_IDLOAD(vkGetPhysicalDeviceQueueFamilyProperties);
 VULKAN_IDLOAD(vkGetPhysicalDeviceMemoryProperties);
-
-VkResult vkEnumerateInstanceExtensionProperties(const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties)
+*/
+VkResult __vkEnumerateInstanceExtensionProperties(const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties)
 {
+    if (_vkGetInstanceProcAddr == NULL) {
+        HYBRIS_DLSYSM(vulkan, &_vkGetInstanceProcAddr, "vkGetInstanceProcAddr");
+HYBRIS_ERROR("_vkGetInstanceProcAddr == NULL set to %p", _vkGetInstanceProcAddr);
+        ws_vkSetInstanceProcAddrFunc((PFN_vkVoidFunction)_vkGetInstanceProcAddr);
+    }
+
+HYBRIS_ERROR("_vkEnumerateInstanceExtensionProperties addr: %p count %i prop %p", pLayerName, *pPropertyCount, pProperties);
+HYBRIS_ERROR("_vkGetInstanceProcAddr %p", _vkGetInstanceProcAddr);
+
     return ws_vkEnumerateInstanceExtensionProperties(pLayerName, pPropertyCount, pProperties);
 }
 
@@ -124,7 +137,7 @@ VkResult vkCreateWaylandSurfaceKHR(VkInstance instance,
     return ws_vkCreateWaylandSurfaceKHR(instance, pCreateInfo, pAllocator, pSurface);
 }
 
-VkBool32 vkGetPhysicalDeviceWaylandPresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, struct wl_display* display)
+VkBool32 __vkGetPhysicalDeviceWaylandPresentationSupportKHR(VkPhysicalDevice physicalDevice, uint32_t queueFamilyIndex, struct wl_display* display)
 {
     return ws_vkGetPhysicalDeviceWaylandPresentationSupportKHR(physicalDevice, queueFamilyIndex, display);
 }
@@ -135,36 +148,61 @@ void vkDestroySurfaceKHR(VkInstance instance, VkSurfaceKHR surface, const VkAllo
 }
 #endif
 
-PFN_vkVoidFunction vkGetInstanceProcAddr(VkInstance instance, const char* pName)
+PFN_vkVoidFunction __vkGetInstanceProcAddr(VkInstance instance, const char* pName)
 {
     PFN_vkVoidFunction addr;
     if (_vkGetInstanceProcAddr == NULL) {
         HYBRIS_DLSYSM(vulkan, &_vkGetInstanceProcAddr, "vkGetInstanceProcAddr");
+        ws_vkSetInstanceProcAddrFunc((PFN_vkVoidFunction)_vkGetInstanceProcAddr);
     }
 
+    HYBRIS_ERROR("vkGetInstanceProcAddr: %s", pName);
+
     if (!strcmp(pName, "vkEnumerateInstanceExtensionProperties")) {
-        return (PFN_vkVoidFunction)vkEnumerateInstanceExtensionProperties;
+        return (PFN_vkVoidFunction)__vkEnumerateInstanceExtensionProperties;
     } else if (!strcmp(pName, "vkCreateInstance")) {
-        return (PFN_vkVoidFunction)vkCreateInstance;
+        return (PFN_vkVoidFunction)__vkCreateInstance;
     } else if (!strcmp(pName, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR")) {
         return (PFN_vkVoidFunction)vkGetPhysicalDeviceSurfaceCapabilitiesKHR;
 #ifdef WANT_WAYLAND
     } else if (!strcmp(pName, "vkCreateWaylandSurfaceKHR")) {
         return (PFN_vkVoidFunction)vkCreateWaylandSurfaceKHR;
     } else if (!strcmp(pName, "vkGetPhysicalDeviceWaylandPresentationSupportKHR")) {
-        return (PFN_vkVoidFunction)vkGetPhysicalDeviceWaylandPresentationSupportKHR;
+        return (PFN_vkVoidFunction)__vkGetPhysicalDeviceWaylandPresentationSupportKHR;
     } else if (!strcmp(pName, "vkDestroySurfaceKHR")) {
         return (PFN_vkVoidFunction)vkDestroySurfaceKHR;
 #endif
     } else if (!strcmp(pName, "vkGetInstanceProcAddr")) {
-        return (PFN_vkVoidFunction)vkGetInstanceProcAddr;
+        return (PFN_vkVoidFunction)__vkGetInstanceProcAddr;
     }
 
     addr = (*_vkGetInstanceProcAddr)(instance, pName);
 
+    HYBRIS_ERROR("vkGetInstanceProcAddr: %s addr: %p", pName, addr);
+
     return addr;
 }
 
+PFN_vkVoidFunction vk_icdGetInstanceProcAddr(VkInstance instance, const char* pName)
+{
+    return __vkGetInstanceProcAddr(instance, pName);
+}
+
+VkResult vk_icdNegotiateLoaderICDInterfaceVersion(uint32_t* pVersion)
+{
+    uint32_t version = *pVersion < 5 ? *pVersion : 5;
+    HYBRIS_ERROR("vk_icdNegotiateLoaderICDInterfaceVersion: *pVersion %i version: %i", *pVersion, version);
+    *pVersion = version;
+    return VK_SUCCESS;
+}
+
+VULKAN_IDLOAD(vkCreateSwapchainKHR);
+VULKAN_IDLOAD(vkGetPhysicalDeviceSurfaceSupportKHR);
+VULKAN_IDLOAD(vkGetPhysicalDeviceSurfaceFormatsKHR);
+VULKAN_IDLOAD(vkGetPhysicalDeviceSurfacePresentModesKHR);
+
+
+/*
 VULKAN_IDLOAD(vkGetDeviceProcAddr);
 VULKAN_IDLOAD(vkCreateDevice);
 VULKAN_IDLOAD(vkDestroyDevice);
@@ -592,5 +630,5 @@ VULKAN_IDLOAD(vkGetRayTracingCaptureReplayShaderGroupHandlesKHR);
 VULKAN_IDLOAD(vkCmdTraceRaysIndirectKHR);
 VULKAN_IDLOAD(vkGetRayTracingShaderGroupStackSizeKHR);
 VULKAN_IDLOAD(vkCmdSetRayTracingPipelineStackSizeKHR);
-
+*/
 // vim:ts=4:sw=4:noexpandtab

@@ -152,7 +152,8 @@ void freeWaylandDisplay(WaylandDisplay *wdpy)
 static VkResult waylandws_vkEnumerateInstanceExtensionProperties(const char* pLayerName, uint32_t* pPropertyCount, VkExtensionProperties* pProperties)
 {
     VkResult res;
-
+HYBRIS_ERROR("waylandws_vkEnumerateInstanceExtensionProperties addr: %p count %i prop %p", pLayerName, *pPropertyCount, pProperties);
+HYBRIS_ERROR("_vkGetInstanceProcAddr %p", _vkGetInstanceProcAddr);
     if (_vkEnumerateInstanceExtensionProperties == NULL) {
         _vkEnumerateInstanceExtensionProperties = (VkResult (*)(const char*, uint32_t*, VkExtensionProperties*))
             (*_vkGetInstanceProcAddr)(NULL, "vkEnumerateInstanceExtensionProperties");
@@ -202,6 +203,7 @@ VkResult waylandws_vkCreateInstance(const VkInstanceCreateInfo *pCreateInfo, con
         free(enabledExtensions[i]);
     }
     free(enabledExtensions);
+HYBRIS_ERROR("waylandws_vkCreateInstance res %i", result);
 
     return result;
 }
@@ -295,6 +297,7 @@ static void waylandws_vkDestroySurfaceKHR(VkInstance instance, VkSurfaceKHR surf
 
 extern "C" void waylandws_vkSetInstanceProcAddrFunc(PFN_vkVoidFunction addr)
 {
+	HYBRIS_ERROR("waylandws_vkSetInstanceProcAddrFunc addr: %p", addr);
     if (_vkGetInstanceProcAddr == NULL)
         _vkGetInstanceProcAddr = (PFN_vkVoidFunction (*)(VkInstance, const char*))addr;
 }
