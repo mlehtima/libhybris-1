@@ -81,6 +81,7 @@ void hybris_gralloc_deinitialize(void);
 
 void hybris_gralloc_initialize(int framebuffer)
 {
+    fprintf(stderr, "hybris_gralloc_initialize\n");
     if (version == -1) {
         if (hw_get_module(GRALLOC_HARDWARE_MODULE_ID, (const struct hw_module_t **)&gralloc_hardware_module) == 0) {
 #if HAS_GRALLOC1_HEADER
@@ -136,6 +137,7 @@ void hybris_gralloc_initialize(int framebuffer)
 
 void hybris_gralloc_deinitialize(void)
 {
+    fprintf(stderr, "hybris_gralloc_deinitialize\n");
     if (framebuffer_device) framebuffer_close(framebuffer_device);
     framebuffer_device = NULL;
 
@@ -153,6 +155,8 @@ void hybris_gralloc_deinitialize(void)
     if (gralloc_hardware_module) android_dlclose(gralloc_hardware_module->dso);
 #endif
     gralloc_hardware_module = NULL;
+
+    version = -1;
 }
 
 #if HAS_GRALLOC1_HEADER
