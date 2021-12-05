@@ -41,22 +41,26 @@ extern "C" void hwcomposerws_Terminate(_EGLDisplay *dpy)
 
 extern "C" EGLNativeWindowType hwcomposerws_CreateWindow(EGLNativeWindowType win, _EGLDisplay *display)
 {
+	HYBRIS_TRACE_BEGIN("hybris-eglplatform-hwcomposer", "hwcomposerws_CreateWindow", "");
 	assert (_nativewindow == NULL);
 
 	HWComposerNativeWindow *window = static_cast<HWComposerNativeWindow *>((ANativeWindow *) win);
 	_nativewindow = window;
 	_nativewindow->common.incRef(&_nativewindow->common);
+	HYBRIS_TRACE_END("hybris-eglplatform-hwcomposer", "hwcomposerws_CreateWindow", "");
 	return (EGLNativeWindowType) static_cast<struct ANativeWindow *>(_nativewindow);
 }
 
 extern "C" void hwcomposerws_DestroyWindow(EGLNativeWindowType win)
 {
+	HYBRIS_TRACE_BEGIN("hybris-eglplatform-hwcomposer", "hwcomposerws_DestroyWindow", "");
 	assert (_nativewindow != NULL);
 	assert (static_cast<HWComposerNativeWindow *>((struct ANativeWindow *)win) == _nativewindow);
 
 	_nativewindow->common.decRef(&_nativewindow->common);
 	/* We are done with it, refcounting will delete the window when appropriate */
 	_nativewindow = NULL;
+	HYBRIS_TRACE_END("hybris-eglplatform-hwcomposer", "hwcomposerws_DestroyWindow", "");
 }
 
 extern "C" __eglMustCastToProperFunctionPointerType hwcomposerws_eglGetProcAddress(const char *procname) 

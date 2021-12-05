@@ -92,6 +92,7 @@ struct _EGLDisplay *ws_GetDisplay(EGLNativeDisplayType display)
 
 void ws_Terminate(struct _EGLDisplay *dpy)
 {
+	HYBRIS_WARN("ws_Terminate\n");
 	assert(ws != NULL);
 	ws->Terminate(dpy);
 }

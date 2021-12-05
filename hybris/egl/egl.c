@@ -198,6 +198,7 @@ EGLDisplay __eglHybrisGetPlatformDisplayCommon(EGLenum platform,
 	// We have nothing to do with attrib_list at the moment. Silence the unused
 	// variable warning.
 	(void) attrib_list;
+	HYBRIS_WARN("__eglHybrisGetPlatformDisplayCommon\n");
 
 	HYBRIS_DLSYSM(egl, &_eglGetDisplay, "eglGetDisplay");
 
@@ -228,6 +229,7 @@ EGLDisplay __eglHybrisGetPlatformDisplayCommon(EGLenum platform,
 			__eglHybrisSetError(EGL_BAD_PARAMETER);
 			return EGL_NO_DISPLAY;
 	}
+	HYBRIS_WARN("__eglHybrisGetPlatformDisplayCommon %s\n", hybris_ws);
 
 	if (ws_init(hybris_ws) == EGL_FALSE) { // Other ws already loaded.
 		__eglHybrisSetError(EGL_BAD_PARAMETER);
@@ -277,6 +279,7 @@ EGLBoolean eglTerminate(EGLDisplay dpy)
 {
 	HYBRIS_DLSYSM(egl, &_eglTerminate, "eglTerminate");
 
+	HYBRIS_WARN("eglTerminate\n");
 	struct _EGLDisplay *display = hybris_egl_display_get_mapping(dpy);
 	ws_Terminate(display);
 	return (*_eglTerminate)(dpy);

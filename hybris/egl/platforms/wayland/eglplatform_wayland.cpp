@@ -160,6 +160,8 @@ extern "C" void waylandws_Terminate(_EGLDisplay *dpy)
 {
 	WaylandDisplay *wdpy = (WaylandDisplay *)dpy;
 	int ret = 0;
+
+	HYBRIS_WARN("waylandws_Terminate\n");
 	// We still have the sync callback on flight, wait for it to arrive
 	while (ret == 0 && !wdpy->wlegl) {
 		ret = wl_display_dispatch_queue(wdpy->wl_dpy, wdpy->queue);
@@ -173,6 +175,7 @@ extern "C" void waylandws_Terminate(_EGLDisplay *dpy)
 
 extern "C" EGLNativeWindowType waylandws_CreateWindow(EGLNativeWindowType win, _EGLDisplay *display)
 {
+	HYBRIS_TRACE_BEGIN("hybris-eglplatform-wayland", "waylandws_CreateWindow", "");
 	struct wl_egl_window *wl_window = (struct wl_egl_window*) win;
 	struct wl_display *wl_display = (struct wl_display*) display;
 
@@ -194,13 +197,16 @@ extern "C" EGLNativeWindowType waylandws_CreateWindow(EGLNativeWindowType win, _
 
 	WaylandNativeWindow *window = new WaylandNativeWindow((struct wl_egl_window *) win, wdpy->wl_dpy, wdpy->wlegl);
 	window->common.incRef(&window->common);
+	HYBRIS_TRACE_END("hybris-eglplatform-wayland", "waylandws_CreateWindow", "");
 	return (EGLNativeWindowType) static_cast<struct ANativeWindow *>(window);
 }
 
 extern "C" void waylandws_DestroyWindow(EGLNativeWindowType win)
 {
+	HYBRIS_TRACE_BEGIN("hybris-eglplatform-wayland", "waylandws_DestroyWindow", "");
 	WaylandNativeWindow *window = static_cast<WaylandNativeWindow *>((struct ANativeWindow *)win);
 	window->common.decRef(&window->common);
+	HYBRIS_TRACE_END("hybris-eglplatform-wayland", "waylandws_DestroyWindow", "");
 }
 
 extern "C" int waylandws_post(EGLNativeWindowType win, void *buffer)
