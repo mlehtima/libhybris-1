@@ -90,7 +90,9 @@ static void unregister_tls_module(soinfo* si) {
 
   soinfo_tls* si_tls = si->get_tls();
   TlsModule& mod = g_tls_modules[__tls_module_id_to_idx(si_tls->module_id)];
+#ifdef DISABLED_FOR_HYBRIS_SUPPORT
   CHECK(mod.static_offset == SIZE_MAX);
+#endif
   CHECK(mod.soinfo_ptr == si);
   mod = {};
   si_tls->module_id = kTlsUninitializedModuleId;
