@@ -103,6 +103,10 @@ struct ComposerCallback {
 #if ANDROID_VERSION_MAJOR >= 14
     virtual void onRefreshRateChangedDebug(const RefreshRateChangedDebugData&) = 0;
 #endif
+#if ANDROID_VERSION_MAJOR >= 15
+    virtual void onHdcpLevelsChanged(int64_t in_display,
+            const ::aidl::android::hardware::drm::HdcpLevels& in_level) = 0;
+#endif
 
 protected:
     ~ComposerCallback() = default;
