@@ -98,19 +98,25 @@ static pthread_mutex_t g_dl_mutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 static __thread char *dl_err_str;
 char __thread dlerror_buffer[__BIONIC_DLERROR_BUFFER_SIZE];
 
-static char* __bionic_set_dlerror(char* new_value) {
 #ifdef DISABLED_FOR_HYBRIS_SUPPORT
+static char* __bionic_set_dlerror(char* new_value) {
   char* old_value = __get_thread()->current_dlerror;
   __get_thread()->current_dlerror = new_value;
 
   if (new_value != nullptr) LD_LOG(kLogErrors, "dlerror set to \"%s\"", new_value);
   return old_value;
+}
 #else
+static char* __bionic_set_dlerror(char* new_value, bool print = false) {
   char *old_value = dl_err_str;
   dl_err_str = new_value;
+
+  if (print && new_value)
+    fprintf(stderr, "%s\n", new_value);
+
   return old_value;
-#endif
 }
+#endif
 
 static void __bionic_format_dlerror(const char* msg, const char* detail) {
 #ifdef DISABLED_FOR_HYBRIS_SUPPORT
@@ -118,13 +124,25 @@ static void __bionic_format_dlerror(const char* msg, const char* detail) {
 #else
   char* buffer = dlerror_buffer;
 #endif
+  /* Hybris: detect and skip "no print" indicator. See `DL_ERR_NO_PRINT()`. */
+  bool print = true;
+  if (msg[0] == '#') {
+    print = false;
+    msg++;
+  }
+
+  if (detail && detail[0] == '#') {
+    print = false;
+    detail++;
+  }
+
   strlcpy(buffer, msg, __BIONIC_DLERROR_BUFFER_SIZE);
   if (detail != nullptr) {
     strlcat(buffer, ": ", __BIONIC_DLERROR_BUFFER_SIZE);
     strlcat(buffer, detail, __BIONIC_DLERROR_BUFFER_SIZE);
   }
 
-  __bionic_set_dlerror(buffer);
+  __bionic_set_dlerror(buffer, print);
 }
 
 char* __loader_dlerror() {
