@@ -263,9 +263,9 @@ AM_CONDITIONAL([HAS_ANDROID_2_3_0], [test $android_headers_major -ge 2 -a $andro
 
 if test $android_headers_major -ge 7; then
   if test "x$arch" = "xarm" -o "x$arch" = "xx86"; then
-    DEFAULT_HYBRIS_LD_LIBRARY_PATH="/system/lib:/odm/lib:/vendor/lib"
+    DEFAULT_HYBRIS_LD_LIBRARY_PATH="/system/lib:/system_ext/lib:/odm/lib:/vendor/lib"
   else
-    DEFAULT_HYBRIS_LD_LIBRARY_PATH="/system/lib64:/odm/lib64:/vendor/lib64"
+    DEFAULT_HYBRIS_LD_LIBRARY_PATH="/system/lib64:/system_ext/lib64:/odm/lib64:/vendor/lib64"
   fi
 else
   if test "x$arch" = "xarm" -o "x$arch" = "xx86"; then
